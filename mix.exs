@@ -16,7 +16,7 @@ defmodule TelegramBot.MixProject do
     [
       applications: [:nadia],
       registered: [:telegram_bot],
-      extra_applications: [:logger],
+      extra_applications: [:logger, :plug_cowboy],
       mod: {TelegramBot, []}
     ]
   end
@@ -27,6 +27,7 @@ defmodule TelegramBot.MixProject do
       {:nadia, "~> 0.5.0"},
       {:httpoison, "~> 1.5"},
       {:poison, "~> 3.1"},
+      {:plug_cowboy, "~> 2.0"},
       {:dialyxir, "~> 1.0.0-rc.6", only: :dev, runtime: false},
       {:ex_doc, "~> 0.21", only: :dev, runtime: false}
     ]
