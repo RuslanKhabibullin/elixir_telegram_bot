@@ -66,7 +66,5 @@ defmodule Bot.ReplyHandler do
     Nadia.send_photo(chat_id, Anime.Wallpaper.get_random_image.url)
   end
 
-  defp handle_message(chat_id, _) do
-    Nadia.send_message(chat_id, "Command not found. Please use `/help` for command list")
-  end
+  defp handle_message(_chat_id, _), do: nil
 end
