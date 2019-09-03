@@ -27,7 +27,8 @@ defmodule TelegramBot.MixProject do
       {:nadia, "~> 0.5.0"},
       {:httpoison, "~> 1.5"},
       {:poison, "~> 3.1"},
-      {:dialyxir, "~> 1.0.0-rc.6", only: [:dev], runtime: false}
+      {:dialyxir, "~> 1.0.0-rc.6", only: :dev, runtime: false},
+      {:ex_doc, "~> 0.21", only: :dev, runtime: false}
     ]
   end
 end

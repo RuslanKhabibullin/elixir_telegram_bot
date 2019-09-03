@@ -1,4 +1,12 @@
 defmodule Anime.Wallpaper.ApiService do
+  @moduledoc """
+  Module make HTTP requests for Reddit images and returns response
+  """
+
+  @doc """
+  Make HTTP request to `https://www.reddit.com/r/Animewallpaper/new/.json?sort=new&limit=50` and returns parsed result
+  """
+  @spec response() :: {:ok, map()}
   def response do
     case HTTPoison.get("https://www.reddit.com/r/Animewallpaper/new/.json?sort=new&limit=50") do
       {:ok, response} -> parse(response)
