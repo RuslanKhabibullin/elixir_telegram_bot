@@ -14,11 +14,14 @@ defmodule Server.Supervisor do
 
   @doc false
   def init([]) do
-    port = System.get_env("PORT", "8085") |> String.to_integer
-    children = [
-      Plug.Cowboy.child_spec(scheme: :http, plug: Server.Router, options: [port: port])
-    ]
+    Supervisor.init(
+      [Plug.Cowboy.child_spec(scheme: :http, plug: Server.Router, options: [port: server_port()])],
+      [strategy: :one_for_one]
+    )
+  end
 
-    Supervisor.init(children, [strategy: :one_for_one])
+  defp server_port do
+    Application.get_env(:telegram_bot, :server_port)
+    |> String.to_integer
   end
 end
