@@ -1,8 +1,9 @@
 # TelegramBot
 
 ## Description
-Test bot for telegram for learning the elixir language
-Bot name: `TestRuslanBot`
+Test bot for telegram for learning the elixir language.
+- Bot name: `TestRuslanBot`
+
 Now supported and processed commands:
 - `/start` - Greeting message
 - `/help` - Get available commands
