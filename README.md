@@ -1,3 +1,5 @@
+[![Build Status](https://semaphoreci.com/api/v1/khabibullin_ruslan/elixir_telegram_bot/branches/master/badge.svg)](https://semaphoreci.com/khabibullin_ruslan/elixir_telegram_bot)
+
 # TelegramBot
 
 ## Description
