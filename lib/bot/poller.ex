@@ -1,21 +1,21 @@
 require Logger
+require TelegramClient.Wrapper
 
 defmodule Bot.Poller do
-  use GenServer
-
   @moduledoc """
   Listens requests to the bot and sends this messages to processing
   """
 
+  use GenServer
+
+  alias TelegramClient.Wrapper, as: TelegramClient
+
   defmodule State do
-    @moduledoc """
+    @typedoc """
     Describes Poller process state. Used to store timeout and current offset for messages
     """
 
-    @type t :: %__MODULE__{
-      timeout: integer,
-      offset: integer
-    }
+    @type t :: %__MODULE__{timeout: integer, offset: integer}
 
     defstruct timeout: 15, offset: 0
   end
@@ -43,32 +43,29 @@ defmodule Bot.Poller do
   @doc false
   @spec init([]) :: {:ok, Bot.Poller.State.t}
   def init([]) do
-    state = %State{}
     Logger.log(:info, "Pooling server started...")
+    schedule_pool_messages()
 
-    spawn fn -> handle_cast(:start_pool, state) end
-    {:ok, state}
+    {:ok, %State{}}
   end
 
   @doc """
-  Invoked on process initialize - starts infinite loop for Telegram message parsing
+  Pool messages from Telegram and send received messages to `ReplyHandler`
   """
-  @spec handle_cast(any, Bot.Poller.State.t()) :: {:noreply, Bot.Poller.State.t()}
-  def handle_cast(_msg, state = %State{}) do
-    pool(state)
-    {:noreply, state}
-  end
-
-  defp pool(state = %State{timeout: timeout, offset: offset}) do
+  @spec handle_info(:pool_messages, State.t) :: {:noreply, State.t}
+  def handle_info(:pool_messages, state = %State{timeout: timeout, offset: offset}) do
     response =
       [offset: offset, timeout: timeout]
-      |> Nadia.get_updates
+      |> TelegramClient.get_updates
       |> process_messages
-
-    case response do
-      %Message{update_id: offset} -> pool(%State{state | offset: offset + 1})
-      _ -> pool(state)
+  
+    state = case response do
+      %Message{update_id: offset} -> %State{state | offset: offset + 1}
+      _ -> state
     end
+
+    schedule_pool_messages()
+    {:noreply, state}
   end
 
   defp process_messages({:ok, messages}) do
@@ -81,7 +78,13 @@ defmodule Bot.Poller do
 
   defp process_message(%{update_id: update_id, message: %{text: text, chat: %{id: chat_id}}}) do
     message = %Message{update_id: update_id, text: text, chat_id: chat_id}
-    GenServer.cast(:reply_handler, message)
+    Bot.ReplyHandler.handle_message(message)
     message
+  end
+
+  defp process_message(_), do: nil
+
+  defp schedule_pool_messages do
+    Process.send_after(self(), :pool_messages, 200)
   end
 end

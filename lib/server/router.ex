@@ -1,4 +1,8 @@
 defmodule Server.Router do
+  @moduledoc """
+  Simple routing for web-server. Respond only to root url
+  """
+
   use Plug.Router
 
   plug(:match)

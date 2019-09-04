@@ -13,12 +13,12 @@ defmodule TelegramBot.MixProject do
 
   # Run "mix help compile.app" to learn about applications.
   def application do
-    [
-      applications: [:nadia],
+    application_config = [
       registered: [:telegram_bot],
-      extra_applications: [:logger, :plug_cowboy],
-      mod: {TelegramBot, []}
+      extra_applications: [:logger],
     ]
+    
+    Keyword.merge(application_config, elixir_mods(Mix.env))
   end
 
   # Run "mix help deps" to learn about dependencies.
@@ -29,7 +29,11 @@ defmodule TelegramBot.MixProject do
       {:poison, "~> 3.1"},
       {:plug_cowboy, "~> 2.0"},
       {:dialyxir, "~> 1.0.0-rc.6", only: :dev, runtime: false},
-      {:ex_doc, "~> 0.21", only: :dev, runtime: false}
+      {:ex_doc, "~> 0.21", only: :dev, runtime: false},
+      {:mox, "~> 0.5", only: :test}
     ]
   end
+
+  defp elixir_mods(:test), do: []
+  defp elixir_mods(_), do: [mod: {TelegramBot, []}]
 end

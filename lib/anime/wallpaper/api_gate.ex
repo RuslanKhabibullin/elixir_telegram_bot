@@ -4,8 +4,8 @@ defmodule Anime.Wallpaper.ApiGate do
   """
 
   defmodule Image do
-    @moduledoc """
-    Image struct for necessary image data store from Reddit response
+    @typedoc """
+    Image type for necessary image data from Reddit response
     """
 
     @type t :: %__MODULE__{
@@ -15,6 +15,14 @@ defmodule Anime.Wallpaper.ApiGate do
     }
   
     defstruct url: nil, id: 0, created_utc: 0
+  end
+
+  defmodule ParseError do
+    @moduledoc """
+    Custom exception for Response parse - called when we cant successfully parse response
+    """
+
+    defexception message: "Can't parse response"
   end
 
   @doc """
@@ -27,9 +35,7 @@ defmodule Anime.Wallpaper.ApiGate do
     |> Enum.filter(&is_image?/1)
   end
 
-  def get(_) do
-    raise "Got unexpected error"
-  end
+  def get(_), do: raise ParseError
 
   defp parse_post(%{"data" => %{"url" => url, "id" => id, "created_utc" => created_utc}}) do
     %Image{url: url, id: id, created_utc: created_utc}
