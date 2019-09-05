@@ -1,11 +1,11 @@
-require TelegramClient.Behaviour
+require Telegram.ClientBehaviour
 
-defmodule TelegramClient.Wrapper do
+defmodule Telegram.Client do
   @moduledoc """
-  Realize TelegramClient Interface. Wrapper for Nadia client library  
+  Realize Telegram Client Interface. Wrapper for Nadia client library  
   """
 
-  @behaviour TelegramClient.Behaviour
+  @behaviour Telegram.ClientBehaviour
 
   @telegram_client Application.get_env(:telegram_bot, :telegram_client)
 

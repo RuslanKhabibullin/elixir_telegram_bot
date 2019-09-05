@@ -1,6 +1,6 @@
 require Logger
-require Anime.Wallpaper
-require TelegramClient.Wrapper
+require Anime.Client
+require Telegram.Client
 
 defmodule Bot.ReplyHandler do
   @moduledoc """
@@ -8,8 +8,6 @@ defmodule Bot.ReplyHandler do
   """
 
   use GenServer
-
-  alias TelegramClient.Wrapper, as: TelegramClient
 
   @start_message """
                  Hello! This is RuslanTestBot for elixir learning
@@ -33,7 +31,7 @@ defmodule Bot.ReplyHandler do
 
   @doc false
   def start_link do
-    GenServer.start_link(__MODULE__, [], [name: :reply_handler])
+    GenServer.start_link(__MODULE__, [], name: :reply_handler)
   end
 
   @doc false
@@ -49,9 +47,9 @@ defmodule Bot.ReplyHandler do
   @spec handle_cast(Bot.Poller.Message.t, State.t) :: {:noreply, State.t}
   def handle_cast(%Bot.Poller.Message{chat_id: chat_id, text: text}, state = %State{}) do
     case text do
-      "/start" -> TelegramClient.send_message(chat_id, @start_message)
-      "/help" -> TelegramClient.send_message(chat_id, @help_message)
-      "/anime_wallpaper" -> TelegramClient.send_photo(chat_id, Anime.Wallpaper.get_random_image.url)
+      "/start" -> Telegram.Client.send_message(chat_id, @start_message)
+      "/help" -> Telegram.Client.send_message(chat_id, @help_message)
+      "/anime_wallpaper" -> Telegram.Client.send_photo(chat_id, Anime.Client.get_random_image.url)
       _ -> nil
     end
     {:noreply, state}

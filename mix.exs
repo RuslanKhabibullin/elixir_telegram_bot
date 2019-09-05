@@ -28,6 +28,7 @@ defmodule TelegramBot.MixProject do
       {:httpoison, "~> 1.5"},
       {:poison, "~> 3.1"},
       {:plug_cowboy, "~> 2.0"},
+      {:injex, "~> 1.0"},
       {:dialyxir, "~> 1.0.0-rc.6", only: :dev, runtime: false},
       {:ex_doc, "~> 0.21", only: :dev, runtime: false},
       {:mox, "~> 0.5", only: :test}

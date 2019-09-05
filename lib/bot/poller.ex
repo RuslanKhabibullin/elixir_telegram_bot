@@ -1,5 +1,5 @@
 require Logger
-require TelegramClient.Wrapper
+require Telegram.Client
 
 defmodule Bot.Poller do
   @moduledoc """
@@ -8,7 +8,9 @@ defmodule Bot.Poller do
 
   use GenServer
 
-  alias TelegramClient.Wrapper, as: TelegramClient
+  import Injex
+
+  inject :reply_handler, Bot.ReplyHandler
 
   defmodule State do
     @typedoc """
@@ -37,11 +39,11 @@ defmodule Bot.Poller do
 
   @doc false
   def start_link do
-    GenServer.start_link(__MODULE__, [], [name: :pooler_server])
+    GenServer.start_link(__MODULE__, [], name: :pooler_server)
   end
 
   @doc false
-  @spec init([]) :: {:ok, Bot.Poller.State.t}
+  @spec init([]) :: {:ok, State.t}
   def init([]) do
     Logger.log(:info, "Pooling server started...")
     schedule_pool_messages()
@@ -56,7 +58,7 @@ defmodule Bot.Poller do
   def handle_info(:pool_messages, state = %State{timeout: timeout, offset: offset}) do
     response =
       [offset: offset, timeout: timeout]
-      |> TelegramClient.get_updates
+      |> Telegram.Client.get_updates
       |> process_messages
   
     state = case response do
@@ -78,7 +80,7 @@ defmodule Bot.Poller do
 
   defp process_message(%{update_id: update_id, message: %{text: text, chat: %{id: chat_id}}}) do
     message = %Message{update_id: update_id, text: text, chat_id: chat_id}
-    Bot.ReplyHandler.handle_message(message)
+    reply_handler().handle_message(message)
     message
   end
 

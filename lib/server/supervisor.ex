@@ -9,7 +9,7 @@ defmodule Server.Supervisor do
 
   @doc false
   def start_link do
-    Supervisor.start_link(__MODULE__, [], [name: :server_supervisor])
+    Supervisor.start_link(__MODULE__, [], name: :server_supervisor)
   end
 
   @doc false

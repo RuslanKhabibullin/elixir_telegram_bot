@@ -5,11 +5,9 @@ defmodule Bot.SupervisorTest do
   import Mox
 
   setup :set_mox_global
-  setup :verify_on_exit!
   setup do
     stub(TelegramClientMock, :get_updates, fn _options -> {:ok, []} end)
-    TelegramBot.start(:normal, [])
-
+    Bot.Supervisor.start_link
     :ok
   end
 

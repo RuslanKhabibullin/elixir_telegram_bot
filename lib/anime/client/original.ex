@@ -1,9 +1,10 @@
 require Anime.Wallpaper.ApiService
 require Anime.Wallpaper.ApiGate
 
-defmodule Anime.Wallpaper do
+defmodule Anime.Client.Original do
   @moduledoc """
-  Module for work with anime functionality (images, etc)
+  Original module for work with anime functionality (images, etc).
+  This client used on dev and prov environments
   """
 
   @doc """
