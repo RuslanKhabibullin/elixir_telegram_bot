@@ -8,9 +8,6 @@ defmodule Telegram.Client do
   @behaviour Telegram.ClientBehaviour
 
   @telegram_client Application.get_env(:telegram_bot, :telegram_client)
-
-  @spec get_updates([{atom, any}]) :: {:ok, [map]} | {:error, map}
-  def get_updates(options \\ []), do: @telegram_client.get_updates(options)
   
   @spec send_message(integer, binary, [{atom, any}]) :: {:ok, map} | {:error, map}
   def send_message(chat_id, text, options \\ []), do: @telegram_client.send_message(chat_id, text, options)

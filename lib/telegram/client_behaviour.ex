@@ -8,7 +8,6 @@ defmodule Telegram.ClientBehaviour do
   @typep message :: binary
   @typep photo :: binary
 
-  @callback get_updates(options) :: {:ok, [map]} | {:error, map}
   @callback send_message(chat_id, message, options) :: {:ok, map} | {:error, map}
   @callback send_message(chat_id, message) :: {:ok, map} | {:error, map}
   @callback send_photo(chat_id, photo, options) :: {:ok, map} | {:error, map}

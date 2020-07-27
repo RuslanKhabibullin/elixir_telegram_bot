@@ -14,7 +14,7 @@ defmodule TelegramBot.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     application_config = [
-      registered: [:telegram_bot],
+      registered: [:server],
       extra_applications: [:logger],
     ]
     
@@ -36,5 +36,5 @@ defmodule TelegramBot.MixProject do
   end
 
   defp elixir_mods(:test), do: []
-  defp elixir_mods(_), do: [mod: {TelegramBot, []}]
+  defp elixir_mods(_), do: [mod: {Server, []}]
 end
