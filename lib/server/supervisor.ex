@@ -4,7 +4,6 @@ require Logger
 defmodule Server.Supervisor do
   @moduledoc """
   Supervisor for Server
-  Needed to Heroku deployment(heroku kills Bot processes)
   """
 
   @doc false
