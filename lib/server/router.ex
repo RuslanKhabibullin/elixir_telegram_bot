@@ -24,9 +24,6 @@ defmodule Server.Router do
 
     case bot_token do
       ^telegram_token ->
-        # IO.inspect(conn.body_params)
-        # %{"message" => message} = conn.body_params
-        # IO.inspect(message)
         Telegram.MessageHandler.call(conn.body_params)
         conn
         |> put_resp_content_type("application/json")

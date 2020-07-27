@@ -1,10 +1,13 @@
 require Anime.Client
 require Telegram.Client
+require Telegram.MessageHandlerBehaviour
 
 defmodule Telegram.MessageHandler do
   @moduledoc """
-    Telegram message parsing logic
+  Telegram message parsing logic
   """
+
+  @behaviour Telegram.MessageHandlerBehaviour
 
   @start_message """
                  Hello! This is RuslanTestBot for elixir learning
@@ -15,6 +18,10 @@ defmodule Telegram.MessageHandler do
                 /anime_wallpaper - Get anime wallpaper
                 """
 
+  @doc """
+  Telegram message response logic
+  """
+  @spec call(%{required(:message) => %{required(:text) => String.t, required(:chat) => %{required(:id) => integer}}}) :: true
   def call(%{"message" => %{"text" => text, "chat" => %{"id" => chat_id}}}) do
     case text do
       "/start" -> Telegram.Client.send_message(chat_id, @start_message)
